@@ -1,0 +1,5 @@
+with command:
+ipconfig getifaddr en0 | nslookup
+
+differs on computer used:
+c3r1p1.hive.fi

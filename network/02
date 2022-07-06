@@ -1,0 +1,1 @@
+ifconfig | grep "broadcast" | awk 'NR==1 {print $NF}' && ping -c 2 $(ifconfig | grep "broadcast" | awk 'NR==1 {print $NF}') | grep -i "time" | cut -d' ' -f4 | sort | rev | cut -c 2- | rev | awk '!seen[$0]++'

@@ -1,0 +1,4 @@
+nslookup who.int
+then 'whois' with the IP from result address:
+whois 104.17.113.188 | grep -i "organization" | awk '{print $2 $3}'
+Organization: Cloudflare, Inc.

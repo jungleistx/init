@@ -1,0 +1,5 @@
+SSH
+ssh -p 22 username@ip_address (127.0.0.1)
+
+GUI
+press login, enter username and password.

@@ -1,5 +1,10 @@
 SSH
-ssh -p 22 username@ip_address (127.0.0.1)
+-in vm setting, add a port-forwarding rule:
+name=ssh, protocol=tcp, host port=3022, guest port=22
+
+-make a new user in the vm-server with sudo adduser <username>
+ssh -p 3022 username@localhost
 
 GUI
+open vm
 press login, enter username and password.

@@ -1,1 +1,1 @@
-sudo du /var -h --max-depth=1
+sudo du /var -h -d 1

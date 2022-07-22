@@ -165,7 +165,7 @@ while true; do
 						printf "${YE}{|||)<${NC}    ~  \    _   ~               ~ \n";
 						printf " ${YE}/ \ \n";
 						printf " '-^    ${NC}\n\n";
-						printf "\n${BL}Password removed for username '${NC}$username${BL}'!${NC}\n\n"; #message working??
+						printf "\n${BL}Password removed for username '${NC}$username${BL}'!${NC}\n\n";
 					else
 						printf " \n\n               ~     \                    _    ~ \n"
 						printf "         /                ~             / \n"
@@ -174,7 +174,7 @@ while true; do
 						printf "    ${YE}\|___|/\n"
 						printf "   ./|___|\.\n"
 						printf "      ~_~${NC}\n"
-						printf "\n${RD}ERROR in removing password for username '${NC}$username${RD}'!${NC}\n\n";	#message
+						printf "\n${RD}ERROR in removing password for username '${NC}$username${RD}'!${NC}\n\n";
 					fi;
 				fi;;
 

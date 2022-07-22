@@ -6,5 +6,5 @@ name=ssh, protocol=tcp, host port=3022, guest port=22
 ssh -p 3022 username@localhost
 
 GUI
-open vm
+open virtualmachine
 press login, enter username and password.

@@ -1,0 +1,266 @@
+#! /bin/bash
+
+BL='\033[4;33m'
+YE='\033[1;33m'
+GR='\033[0;32m'
+RD='\033[0;31m'
+NC='\033[0m'
+
+printf "${YE}  ,,   \n"
+printf "  oo  \n"
+printf " /==\ \n"
+printf "(/==\) \n"
+printf "  \/   ${NC}\n"
+
+printf "\n${BL}Welcome to password-handler!${NC}\n\n"
+
+while true; do
+	printf "${GR}Enter a selection\n"
+    printf "[1] List active users\n"
+	printf "[2] Check users password-status\n"
+	printf "[3] Change users password\n"
+	printf "[4] Remove users password\n"
+	printf "[5] Lock users password\n"
+	printf "[6] Unlock users password\n"
+	printf "[7] Quit${NC}\n"
+
+	read -r -p "-> " answer
+
+    case $answer in
+        [1]* )  printf "\n${GR}[1] List active users${NC}\n\n";
+				awk -F':' '{if ($3 >= 1000 && $3 <= 60000) print $1}' /etc/passwd;
+         		printf "\n";;
+
+        [2]* )  printf "\n${GR}[2] Check users password-status${NC}\n\n";
+                printf "Enter a username\n";
+				read -r -p "-> " username;
+				found=$(awk -F: '{if ($3 >= 1000 && $3 <= 60000) print $1}' /etc/passwd | grep -w $username);
+				if [ -z $found ];
+				then
+					printf "\n${RD}ERROR, username '${NC}$username${RD}' not found!${NC}\n\n";
+					printf "               ~     \                    _    ~\n"
+					printf "         /                ~             / \n"
+					printf "                             \    \n"
+					printf "   ${YE},  _^_  .${NC}                      ~    \n"
+					printf "    ${YE}\|___|/\n"
+					printf "   ./|___|\.\n"
+					printf "      ~_~${NC}\n\n"
+					printf "${RD}Lets try again...${NC}\n\n";
+				else
+					user_status=$(sudo passwd -S $username);
+
+					if [ $? == 0 ];
+					then
+						printf "\n\n ${YE},-.${NC}                         -   _   \n";
+						printf " ${YE}\_/${NC}                     /          \  \n";
+						printf "${YE}{|||)<${NC}    ~  \    _   ~               ~ \n";
+						printf " ${YE}/ \ \n";
+						printf " '-^    ${NC}\n\n";
+						printf "\nLogin name: ${GR}";
+						echo $user_status | cut -d' ' -f1;
+						printf "${NC}";
+
+						passwd_status=$(echo $user_status | cut -d' ' -f2);
+						printf "Password status: ";
+						if [ $passwd_status == 'P' ];
+						then
+							printf "${GR}usable password${NC}\n";
+						elif [ $passwd_status == 'NP' ];
+						then
+							printf "${RD}no password${NC}\n";
+						elif [ $passwd_status == 'L' ];
+						then
+							printf "${RD}locked${NC}\n";
+						fi;
+
+						printf "Last password change (mm/dd/yyyy): ${GR}";
+						echo $user_status | cut -d' ' -f3;
+						printf "${NC}";
+
+						printf "Minimum age of password (days): ${GR}";
+						echo $user_status | cut -d' ' -f4;
+						printf "${NC}";
+
+						printf "Maximum age of password (days): ${GR}";
+						echo $user_status | cut -d' ' -f5;
+						printf "${NC}";
+
+						printf "Warning period for password (days): ${GR}";
+						echo $user_status | cut -d' ' -f6;
+						printf "${NC}";
+
+						printf "Inactivity period for '$username' (days): ${GR}";
+						echo $user_status | cut -d' ' -f7;
+						printf "${NC}\n";
+					else
+						printf "\n\n               ~     \                    _    ~\n"
+						printf "         /                ~             / \n"
+						printf "                             \    \n"
+						printf "   ${YE},  _^_  .${NC}                      ~    \n"
+						printf "    ${YE}\|___|/\n"
+						printf "   ./|___|\.\n"
+						printf "      ~_~${NC}\n\n"
+					fi;
+				fi;;
+
+        [3]* )  printf "\n${GR}[3] Change users password${NC}\n";
+                printf "Enter a username\n";
+				read -r -p "-> " username;
+				found=$(awk -F: '{if ($3 >= 1000 && $3 <= 60000) print $1}' /etc/passwd | grep -w $username);
+				if [ -z $found ];
+				then
+					printf "\n${RD}ERROR, username '${NC}$username${RD}' not found!${NC}\n\n";
+					printf "               ~     \                    _    ~\n"
+					printf "         /                ~             / \n"
+					printf "                             \    \n"
+					printf "   ${YE},  _^_  .${NC}                      ~    \n"
+					printf "    ${YE}\|___|/\n"
+					printf "   ./|___|\.\n"
+					printf "      ~_~${NC}\n\n"
+					printf "${RD}Lets try again...${NC}\n\n";
+				else
+					sudo passwd -q $username > /dev/null;
+
+					if [ $? == 0 ];
+					then
+						printf "for username '${GR}$username${NC}'!\n\n";
+						printf " ${YE},-.${NC}                         -   _   \n";
+						printf " ${YE}\_/${NC}                     /          \  \n";
+						printf "${YE}{|||)<${NC}    ~  \    _   ~               ~ \n";
+						printf " ${YE}/ \ \n";
+						printf " '-^    ${NC}\n\n";
+					else
+						printf "for username '${RD}$username${NC}'!\n\n";
+						printf "               ~     \                    _    ~\n"
+						printf "         /                ~             / \n"
+						printf "                             \    \n"
+						printf "   ${YE},  _^_  .${NC}                      ~    \n"
+						printf "    ${YE}\|___|/\n"
+						printf "   ./|___|\.\n"
+						printf "      ~_~${NC}\n\n"
+					fi;
+				fi;;
+        [4]* )  printf "\n${GR}[4] Remove users password${NC}\n";
+				printf "\nEnter a username\n";
+				read -r -p "-> " username;
+				found=$(awk -F: '{if ($3 >= 1000 && $3 <= 60000) print $1}' /etc/passwd | grep -w $username);
+				if [ -z $found ];
+				then
+					printf "\n${RD}ERROR, username '${NC}$username${RD}' not found!${NC}\n\n";
+					printf "               ~     \                    _    ~\n"
+					printf "         /                ~             / \n"
+					printf "                             \    \n"
+					printf "   ${YE},  _^_  .${NC}                      ~    \n"
+					printf "    ${YE}\|___|/\n"
+					printf "   ./|___|\.\n"
+					printf "      ~_~${NC}\n\n"
+					printf "${RD}Lets try again...${NC}\n\n";
+				else
+					sudo passwd -d $username > /dev/null;
+
+					if [ $? == 0 ];
+					then
+						printf "\n ${YE},-.${NC}                         -   _   \n";
+						printf " ${YE}\_/${NC}                     /          \  \n";
+						printf "${YE}{|||)<${NC}    ~  \    _   ~               ~ \n";
+						printf " ${YE}/ \ \n";
+						printf " '-^    ${NC}\n\n";
+						printf "\n${BL}Password removed for username '${NC}$username${BL}'!${NC}\n\n"; #message working??
+					else
+						printf " \n\n               ~     \                    _    ~ \n"
+						printf "         /                ~             / \n"
+						printf "                             \    \n"
+						printf "   ${YE},  _^_  .${NC}                      ~    \n"
+						printf "    ${YE}\|___|/\n"
+						printf "   ./|___|\.\n"
+						printf "      ~_~${NC}\n"
+						printf "\n${RD}ERROR in removing password for username '${NC}$username${RD}'!${NC}\n\n";	#message
+					fi;
+				fi;;
+
+        [5]* )  printf "\n${GR}[5] Lock users password${NC}\n";
+				printf "\nEnter a username\n";
+				read -r -p "-> " username;
+				found=$(awk -F: '{if ($3 >= 1000 && $3 <= 60000) print $1}' /etc/passwd | grep -w $username);
+				if [ -z $found ];
+				then
+					printf "\n${RD}ERROR, username '${NC}$username${RD}' not found!${NC}\n\n";
+					printf "               ~     \                    _    ~\n"
+					printf "         /                ~             / \n"
+					printf "                             \    \n"
+					printf "   ${YE},  _^_  .${NC}                      ~    \n"
+					printf "    ${YE}\|___|/\n"
+					printf "   ./|___|\.\n"
+					printf "      ~_~${NC}\n\n"
+					printf "${RD}Lets try again...${NC}\n\n";
+				else
+					sudo passwd -l $username > /dev/null;
+
+					if [ $? == 0 ];
+					then
+						printf "\n\n ${YE},-.${NC}                         -   _   \n";
+						printf " ${YE}\_/${NC}                     /          \  \n";
+						printf "${YE}{|||)<${NC}    ~  \    _   ~               ~ \n";
+						printf " ${YE}/ \ \n";
+						printf " '-^    ${NC}\n";
+						printf "\n${BL}Password locked for username '${NC}$username${BL}'!${NC}\n\n";
+					else
+						printf "\n\n               ~     \                    _    ~\n"
+						printf "         /                ~             / \n"
+						printf "                             \    \n"
+						printf "   ${YE},  _^_  .${NC}                      ~    \n"
+						printf "    ${YE}\|___|/\n"
+						printf "   ./|___|\.\n"
+						printf "      ~_~${NC}\n"
+						printf "\n${RD}ERROR in locking password for username '${NC}$username${RD}'!${NC}\n\n";
+					fi;
+				fi;;
+        [6]* )  printf "\n${GR}[6] Unlock users password${NC}\n";
+				printf "\nEnter a username\n";
+				read -r -p "-> " username;
+				found=$(awk -F: '{if ($3 >= 1000 && $3 <= 60000) print $1}' /etc/passwd | grep -w $username);
+				if [ -z $found ];
+				then
+					printf "\n${RD}ERROR, username '${NC}$username${RD}' not found!${NC}\n\n";
+					printf "               ~     \                    _    ~\n"
+					printf "         /                ~             / \n"
+					printf "                             \    \n"
+					printf "   ${YE},  _^_  .${NC}                      ~    \n"
+					printf "    ${YE}\|___|/\n"
+					printf "   ./|___|\.\n"
+					printf "      ~_~${NC}\n\n"
+					printf "${RD}Lets try again...${NC}\n\n";
+				else
+					sudo passwd -u $username > /dev/null;
+
+					if [ $? == 0 ];
+					then
+						printf "\n\n ${YE},-.${NC}                         -   _   \n";
+						printf " ${YE}\_/${NC}                     /          \  \n";
+						printf "${YE}{|||)<${NC}    ~  \    _   ~               ~ \n";
+						printf " ${YE}/ \ \n";
+						printf " '-^    ${NC}\n";
+						printf "\n${BL}Password unlocked for username '${NC}$username${BL}'!${NC}\n\n";
+					else
+						printf "\n\n               ~     \                    _    ~\n"
+						printf "         /                ~             / \n"
+						printf "                             \    \n"
+						printf "   ${YE},  _^_  .${NC}                      ~    \n"
+						printf "    ${YE}\|___|/\n"
+						printf "   ./|___|\.\n"
+						printf "      ~_~${NC}\n"
+						printf "\n${RD}ERROR in unlocking password for username '${NC}$username${RD}'!${NC}\n\n";
+					fi;
+				fi;;
+        [7]* )  printf "\n${BL}Exiting... BYE!${NC}\n";
+				printf "${YE}  ,,   \n"
+				printf "  oo   , \n"
+				printf " /==\ /   \n"
+				printf "(/==\) \n"
+				printf "  \/   ${NC}\n"
+				exit;;
+        * ) printf "\n${RD}Invalid answer, try again!${NC}\n\n";;
+    esac
+done
+printf "\n${BL}All done here, thanks for popping by!${NC}\n"
+exit
